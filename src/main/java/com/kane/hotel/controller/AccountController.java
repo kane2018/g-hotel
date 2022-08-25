@@ -116,10 +116,10 @@ public class AccountController {
         String hash = encoder.encode(user.getHash());
         user.setHash(hash);
 
-        attributes.addFlashAttribute("success", "Votre mot de passe a été réinitialisé !");
-
         userService.changePassword(user, us.getId());
 
-        return "redirect:/logout";
+        attributes.addFlashAttribute("success", "Votre mot de passe a été réinitialisé !");
+
+        return "redirect:/";
     }
 }

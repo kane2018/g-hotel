@@ -1,17 +1,16 @@
 package com.kane.hotel;
 
 import com.kane.hotel.model.*;
-import com.kane.hotel.service.AdService;
-import com.kane.hotel.service.ImageService;
-import com.kane.hotel.service.RoleService;
-import com.kane.hotel.service.UserService;
+import com.kane.hotel.service.*;
 import io.bloco.faker.Faker;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,15 +25,16 @@ public class HotelApplication implements CommandLineRunner {
     private UserService userService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private BookingService bookingService;
 
     public static void main(String[] args) {
         SpringApplication.run(HotelApplication.class, args);
-
     }
 
     @Override
     public void run(String... args) throws Exception {
-        /*Faker f = new Faker("fr");
+        Faker f = new Faker("fr");
 
         List<User> users = new ArrayList<>();
 
@@ -137,6 +137,27 @@ public class HotelApplication implements CommandLineRunner {
 
             adService.ajouter(a);
 
+            for (int j = 1; j < f.number.between(0, 10); j++) {
+                Booking booking = new Booking();
+
+                DateTime t = new DateTime();
+
+                DateTime sixMois =  t.minusMonths(6);
+                DateTime troisMois =  t.minusMonths(3);
+
+                booking.setCreatedAt(new Timestamp(sixMois.toDate().getTime()));
+                booking.setStartDate(new Timestamp(troisMois.toDate().getTime()));
+
+                int duration = f.number.between(3, 10);
+
+                booking.setEndDate(new Timestamp(troisMois.plusDays(duration).toDate().getTime()));
+                booking.setBooker(users.get(f.number.between(0, users.size() - 1)));
+                booking.setAd(a);
+                booking.setAmount(a.getPrice() * duration);
+
+                bookingService.ajouter(booking);
+            }
+
             for(int j = 1; j <= f.number.between(2, 5); j++){
                 Image image = new Image();
 
@@ -146,6 +167,6 @@ public class HotelApplication implements CommandLineRunner {
 
                 imageService.ajouter(image);
             }
-        }*/
+        }
     }
 }

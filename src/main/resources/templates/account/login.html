@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8">
+  <title layout:title-pattern="$LAYOUT_TITLE - $LAYOUT_CONTENT">G-HOTEL</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+
+  <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+  <script th:src="@{/js/popper.min.js}"></script>
+  <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:replace="~{/message :: message}"></div>
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-3">&nbsp;</div>
+    <div class="col-md-6">
+      <div class="bg-light py-3 py-3">
+        <h1>Connectez vous !</h1>
+
+
+        <div th:if="${error != null}" class="alert alert-warning" th:text="${error}">
+          Email ou mot de passe invalide
+        </div>
+
+        <form action="#" th:action="@{/login}" method="post">
+          <div class="form-group">
+            <label for="username">Email</label>
+            <input type="text" name="username" id="username" class="form-control" placeholder="Adresse email..." value="" required>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" name="password" id="password" class="form-control" placeholder="Mot de passe..." required>
+          </div>
+
+          <div class="form-group">
+            <input type="submit" class="btn btn-success" value="Connexion !">
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

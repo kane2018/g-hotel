@@ -1,0 +1,50 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="header">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">G-HOTEL</a>
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarColor03"
+                aria-controls="navbarColor03" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor03">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link"
+                                        th:href="@{/}">Accueil </a></li>
+
+                <li class="nav-item"><a class="nav-link"
+                                        th:href="@{/ads}">Annonces </a></li>
+            </ul>
+
+            <ul class="navbar-nav align-self-auto">
+
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <img th:src="@{${#authentication.getPrincipal().getPicture()}}" alt="avatar de " class="avatar avatar-min" id="accountDropdownLink"><span th:text="${#authentication.getPrincipal().getFullName()}"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdownLink">
+                        <a th:href="@{/ads/new}" class="dropdown-item">Créer une annonce</a>
+                        <a th:href="@{'/user/'+${#authentication.getPrincipal().getUser().getId()}}" class="dropdown-item">Mon compte</a>
+                        <a href="" class="dropdown-item">Mes réservations</a>
+                        <a th:href="@{/account/profile}" class="dropdown-item">Modifier mon profil</a>
+                        <div class="dropdown-divider"></div>
+                        <a th:href="@{/logout}" class="dropdown-item">Déconnexion</a>
+                    </div>
+                </li>
+
+
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/register}" class="nav-link">Inscription</a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/login}" class="nav-link">Connexion</a>
+                </li>
+
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+

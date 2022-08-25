@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+<head>
+    <title>ACCUEIL</title>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <div class="row align-items-center my-5">
+        <div class="col-3 text-center">
+            <img th:src="@{${user.picture}}" th:alt="'Avatar de '+${user.fullName}" class="avatar mb-3">
+            <br>
+            <span class="badge bg-primary" th:text="${#arrays.length(user.ads)}+' annonces'"></span>
+        </div>
+        <div class="col-9">
+            <h1 th:text="${user.fullName}"></h1>
+
+            <div class="mt-3" th:if="${#authentication.getPrincipal().getUsername() == user.email}">
+                <a th:href="@{/account/profile}" class="btn btn-primary mb-2">Modifier mes informations</a>
+                <a th:href="@{/account/password-update}" class="btn btn-primary mb-2">Modifier mon mot de passe</a>
+            </div>
+
+        </div>
+    </div>
+    <th:block th:utext="${user.description}">
+
+    </th:block>
+
+    <hr>
+    <h2 th:text="'Les annonces de '+${user.fullName}"></h2>
+
+    <div class="row" th:if="${#arrays.length(user.ads) > 0}">
+        <div class="col-md-4" th:each="ad : ${user.ads}" th:with="url=${'/ads/'+{ad.slug}}">
+            <div class="card bg-light mb-3">
+                <div class="card-header text-center">
+                    <span th:text="${ad.rooms}"></span>
+                    chambres, <strong th:text="${ad.price}"></strong><strong> &euro; / nuit</strong> <br />
+
+                    <small>Pas encore noté</small>
+
+
+                </div>
+                <a th:href="@{${url}}"> <img th:src="@{${ad.coverImage}}" alt="Image de l'appartement"
+                                             style="height: 200px; width: 100%; display: block" />
+                </a>
+
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <a th:href="@{${url}}" th:text="${ad.title}"></a>
+                    </h4>
+                    <p th:text="${ad.introduction}">
+
+                    </p>
+                    <a th:href="@{${url}}"
+                       class="btn btn-secondary">En savoir plus !</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-warning" th:unless="${#arrays.length(user.ads) > 0}">
+        <p>
+            <strong th:text="${user.fullName}"></strong> n'a pas encore d'annonce sur le site
+        </p>
+    </div>
+
+</div>
+
+</body>
+</html>

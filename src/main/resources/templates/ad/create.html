@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <h1>Création d'une nouvelle annonce !</h1>
+    <form action="#" th:action="@{/ads/new}" th:object="${ad}" method="post">
+
+        <div class="form-group">
+            <label for="titre" class="form-label mt-4">Titre</label>
+
+            <input type="text" class="form-control" th:field="*{title}" id="titre" />
+
+            <p th:errorclass="error" th:if="*{#fields.hasErrors('title')}" th:errors="*{title}" ></p>
+        </div>
+
+        <div class="form-group">
+            <label for="image" class="form-label mt-4">Image</label>
+            <input type="text" class="form-control" th:field="*{coverImage}" id="image" >
+            <p th:errorclass="error" th:if="*{#fields.hasErrors('coverImage')}" th:errors="*{coverImage}" ></p>
+        </div>
+
+        <div class="form-group">
+            <label for="intro" class="form-label mt-4">Introduction</label>
+            <textarea class="form-control" th:field="*{introduction}" id="intro">
+                </textarea>
+            <p th:errorclass="error" th:if="*{#fields.hasErrors('introduction')}" th:errors="*{introduction}" ></p>
+        </div>
+
+        <div class="form-group">
+            <label for="contenu" class="form-label mt-4">Contenu</label>
+            <textarea type="text" class="form-control" th:field="*{content}" id="contenu" >
+                </textarea>
+            <p th:errorclass="error" th:if="*{#fields.hasErrors('content')}" th:errors="*{content}" ></p>
+        </div>
+
+        <div class="form-group">
+            <label for="nbrecham" class="form-label mt-4">Nombre de chambre</label>
+            <input type="text" class="form-control" th:field="*{rooms}" id="nbrecham" />
+
+        </div>
+        <div class="form-group">
+            <label for="prix" class="form-label mt-4">Prix</label>
+            <input type="text" class="form-control" th:field="*{price}" id="prix" >
+
+        </div>
+
+        <br>
+        <h2>Images de l'annonce</h2>
+
+        <p>Ici, vous pouvez ajouter vos propres images</p>
+        <div id="img">
+            <input type="hidden" id="compteur" value="0">
+
+
+
+        </div>
+
+        <br>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" id="add-image">
+
+                Ajouter une image</button>
+        </div>
+        <div class="form-group">
+        <button type="submit" class="btn btn-primary mt-4">Enregistrer</button>
+        </div>
+    </form>
+
+    <script th:inline="javascript">
+        $('document').ready(function () {
+
+            $("#add-image").click(function () {
+
+                const x = +$('#compteur').val();
+
+                $("#img").append('<div class="form-group" id="block_'+x+'"><div class="row">\n' +
+                    '                    <div class="col-10">\n' +
+                    '                        <div class="row">\n' +
+                    '                            <div class="col">\n' +
+                    '                                <input placeholder="URL de l\'annonce" class="form-control" name="images['+x+'].url" />\n' +
+                    '                            </div>\n' +
+                    '                            <div class="col">\n' +
+                    '                                <input placeholder="Caption de l\'annonce" class="form-control" name="images['+x+'].caption" />\n' +
+                    '                            </div>\n' +
+                    '                        </div>\n' +
+                    '                    </div>\n' +
+                    '                    <div class="col-2">\n' +
+                    '                        <a href="#" class="btn btn-danger" data-action="delete" data-target="#block_'+x+'">X</a>\n' +
+                    '                    </div>\n' +
+                    '                </div></div>');
+
+                const count = +$('#img div.form-group').length;
+                $('#compteur').val(count);
+            });
+
+            $('#img').on('click', '.btn.btn-danger', function (e) {
+                e.preventDefault();
+                const target = this.dataset.target;
+                $(target).remove();
+                const count = +$('#img div.form-group').length;
+                $('#compteur').val(count);
+            });
+
+
+
+        });
+
+
+
+    </script>
+</div>
+
+</body>
+</html>

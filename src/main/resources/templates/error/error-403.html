@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+<head>
+  <title>ACCUEIL</title>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+
+  <h1>
+    Alors ? Vous essayez de bousiller le site ?!
+  </h1>
+  <p class="alert alert-warning">
+    Vous n'avez pas le droit d'accéder à cette ressource
+  </p>
+  <a class="btn btn-primary" th:href="@{/}">Retour à l'accueil</a>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="ad-titre" th:style="'background-image: url('+@{${ad.coverImage}}+')'">
+        <div class="container">
+            <h1 th:text="${ad.title}"></h1>
+            <p th:text="${ad.introduction}"></p>
+            <p class="h2">
+                <strong th:text="${ad.rooms}+' chambres'"></strong> pour <strong th:text="${ad.price}+'&euro;'"></strong> par nuit
+            </p>
+            <a href="#" th:text="Réserver +' !'" class="btn btn-primary"></a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <th:block th:utext="${ad.content}"></th:block>
+
+                <div id="carouselExampleIndicators" class="carousel slide"
+                     data-bs-ride="true">
+                    <div class="carousel-indicators">
+
+                        <button type="button" th:each="image, iter : ${ad.images}"  data-bs-target="#carouselExampleIndicators"
+                                th:attr="data-bs-slide-to=${iter.index}"  th:class="${iter.first}? 'active' : ''"
+                                aria-current="true"
+                                aria-label="Slide 1"></button>
+
+                    </div>
+                    <div class="carousel-inner">
+                        <div th:each="image, iter : ${ad.images}" th:class="${iter.first}? 'carousel-item active' : 'carousel-item'" >
+                            <img th:src="@{${image.url}}" class="d-block w-100" th:alt="${image.caption}">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5 th:text="${ad.title}"></h5>
+                                <p th:text="${image.caption}"></p>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <button class="carousel-control-prev" type="button"
+                            data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button"
+                            data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+
+            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col-2">
+                        <a th:href="@{${'/user/'+{ad.author.id}}}">
+                        <img class="avatar avatar-medium" th:src="@{${ad.author.picture}}" th:alt="${ad.author.fullName}">
+                        </a>
+                    </div>
+                    <div class="col mb-3">
+                        <a th:href="@{${'/user/'+{ad.author.id}}}"><h3 th:text="${ad.author.fullName}"></h3></a>
+<span class="badge bg-primary" th:text="${#arrays.length(ad.author.ads)}+' annonces'"></span>
+                    </div>
+                    <th:block th:utext="${ad.author.description}">
+
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

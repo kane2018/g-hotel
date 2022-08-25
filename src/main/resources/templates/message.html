@@ -1,0 +1,13 @@
+<div th:fragment="message">
+  <div class="container" th:if="${success != null}">
+    <div class="alert alert-success">
+      <p th:text="${success}"></p>
+    </div>
+  </div>
+
+  <div class="container" th:if="${warning != null}">
+    <div class="alert alert-warning">
+      <p th:text="${warning}"></p>
+    </div>
+  </div>
+</div>

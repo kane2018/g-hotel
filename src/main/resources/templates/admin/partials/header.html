@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="header">
+<nav class="navbar navbar-expand-lg navbar-light bg-primary" th:fragment="header_admin">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">G-HOTEL</a>
         <button class="navbar-toggler" type="button"
@@ -10,35 +10,36 @@
         <div class="collapse navbar-collapse" id="navbarColor03">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item"><a class="nav-link"
-                                        th:href="@{/}">Accueil </a></li>
+                                        href="#"><i class="fas fa-chart-line"></i> Dashboard </a></li>
 
                 <li class="nav-item"><a class="nav-link"
-                                        th:href="@{/ads}">Annonces </a></li>
+                                        th:href="@{/admin/ads}"><i class="fas fa-hotel"></i> Annonces </a></li>
+                <li class="nav-item"><a class="nav-link"
+                                        th:href="@{/admin/bookings}"><i class="fas fa-folder"></i> Réservations </a></li>
+                <li class="nav-item"><a class="nav-link"
+                                        th:href="@{/admin/comments}"><i class="fas fa-comments"></i> Commentaires </a></li>
+                <li class="nav-item"><a class="nav-link"
+                                        th:href="@{/admin/users}"><i class="fas fa-users"></i> Utilisateurs </a></li>
             </ul>
 
             <ul class="navbar-nav align-self-auto">
+
+                <li>
+                    <a th:href="@{/}" target="_blank" class="nav-link"><i class="fas fa-eye"></i> Voir le site</a>
+                </li>
 
                 <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                         <img th:src="@{${#authentication.getPrincipal().getPicture()}}" alt="avatar de " class="avatar avatar-min" id="accountDropdownLink"><span th:text="${#authentication.getPrincipal().getFullName()}"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdownLink">
-                        <a th:href="@{/ads/new}" class="dropdown-item">Créer une annonce</a>
-                        <a th:href="@{'/user/'+${#authentication.getPrincipal().getUser().getId()}}" class="dropdown-item">Mon compte</a>
-                        <a th:href="@{/account/bookings}" class="dropdown-item">Mes réservations</a>
-                        <a th:href="@{/account/profile}" class="dropdown-item">Modifier mon profil</a>
-                        <div class="dropdown-divider"></div>
+
                         <a th:href="@{/logout}" class="dropdown-item">Déconnexion</a>
                     </div>
                 </li>
 
 
-                <li class="nav-item" sec:authorize="!isAuthenticated()">
-                    <a th:href="@{/register}" class="nav-link">Inscription</a>
-                </li>
-                <li class="nav-item" sec:authorize="!isAuthenticated()">
-                    <a th:href="@{/login}" class="nav-link">Connexion</a>
-                </li>
+
 
 
             </ul>

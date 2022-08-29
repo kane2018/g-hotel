@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+
+  <h1>Révervation N° : [[${booking.id}]]</h1>
+
+    <div class="alert alert-success" th:if="${withAlert == true}">
+      <h4 class="alert-heading">
+        <p>Votre réservation auprès de
+          <strong><a th:href="@{'/user/'+${booking.ad.author.id}}">
+            [[${booking.ad.author.fullName}]]
+          </a></strong>
+          pour
+          l'annonce
+          <strong>
+            <a th:href="@{'/ads/'+${booking.ad.slug}}">[[${booking.ad.title}]]</a>
+          </strong>
+          a bien été prise en compte !
+        </p>
+      </h4>
+    </div>
+
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="alert-light">
+        <h2>Détails</h2>
+        <dl class="row">
+          <dt class="col-md-4">Numéro</dt>
+          <dd class="col-md-8">[[${booking.id}]]</dd>
+          <dt class="col-md-4">Date d'arrivée</dt>
+          <dd class="col-md-8">[[${#dates.format(booking.startDate, 'dd/MM/yyyy')}]]</dd>
+          <dt class="col-md-4">Date de départ</dt>
+          <dd class="col-md-8">[[${#dates.format(booking.endDate, 'dd/MM/yyyy')}]]</dd>
+          <dt class="col-md-4">Nombre de nuits</dt>
+          <dd class="col-md-8">[[${booking.duration}]]</dd>
+          <dt class="col-md-4">Montant Total</dt>
+          <dd class="col-md-8">[[${booking.amount}]] &euro;</dd>
+          <dt class="col-md-4">Commentaire</dt>
+          <dd class="col-md-8">[[${booking.comment}]]</dd>
+        </dl>
+        <hr>
+        <h2 class="alert-heading">Votre hôte</h2>
+
+        <div class="row mb-3">
+          <div class="col-3">
+            <img th:src="@{${booking.booker.picture}}" class="avatar avatar-medium"
+                 th:alt="'Avatar de '+${booking.booker.fullName}">
+          </div>
+          <div class="col-9">
+            <h4>
+              <a th:href="@{'/user/'+${booking.booker.id}}">
+                [[${booking.booker.fullName}]]
+              </a>
+            </h4>
+            <span class="badge bg-primary">[[${#arrays.length(booking.booker.ads)}]] annonces</span>
+          </div>
+        </div>
+        <th:block th:utext="${booking.booker.description}"></th:block>
+
+        <a class="btn btn-primary" th:href="@{'/user/'+${booking.booker.id}}">Plus d'infos
+          sur [[${booking.booker.firstName}]]</a>
+      </div>
+      <div class="alert-light mt-3" id="comment">
+        <h2 class="alert-heading">Votre avis compte !</h2>
+        <th:block th:if="${#dates.createNow() <= booking.endDate}">
+
+
+          <th:block th:if="${booking.ad.getCommentFromAuthor(author) != null}">
+        <blockquote>
+          [[${booking.ad.getCommentFromAuthor(author).content}]]
+        </blockquote>
+        <strong>Note
+          : <div th:replace="~{/partials/rating::rating(rating=${booking.ad.getCommentFromAuthor(author).rating})}"></div></strong>
+
+          </th:block>
+        <th:block th:if="${booking.ad.getCommentFromAuthor(author) == null}">
+        <form method="post" action="#" th:action="@{'/booking/'+${booking.id}}" th:object="${commentF}">
+          <div class="form-group">
+            <label for="rating" class="form-label mt-4">Note sur 5</label>
+            <input type="text" th:field="*{rating}" class="form-control" placeholder="Veuillez indiquez votre note de 0 à 5" id="rating" min="0" max="5" step="1">
+            <p th:errorclass="error" th:if="*{#fields.hasErrors('rating')}" th:errors="*{rating}"></p>
+          </div>
+          <div class="form-group">
+            <label for="contenu" class="form-label mt-4">Contenu</label>
+            <textarea th:field="*{content}" class="form-control" id="contenu" placeholder="N'hésitez pas à être très précis, cela aidera nos futurs voyageurs !">
+            </textarea>
+            <p th:errorclass="error" th:if="*{#fields.hasErrors('content')}" th:errors="*{content}"></p>
+          </div>
+        <input type="submit" class="btn btn-success" value="Confirmer">
+        </form>
+        </th:block>
+        </th:block>
+        <th:block th:if="${#dates.createNow() > booking.endDate}">
+        <p>Vous ne pourrez pas noter cette annonce tant que votre voyage ne sera pas complet !</p>
+
+        </th:block>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="alert-light">
+        <h2 class="alert-heading">Votre hébergement</h2>
+        <h4>
+          <a th:href="@{'/ads/'+${booking.ad.slug}}">[[${booking.ad.title}]]</a>
+        </h4>
+        <img th:src="@{${booking.ad.coverImage}}" th:alt="'Image de '+${booking.ad.title}" class="img-fluid">
+
+        <th:block th:utext="${booking.ad.content}">
+
+        </th:block>
+
+        <a class="btn btn-primary" th:href="@{'/ads/'+${booking.ad.slug}}">Plus d'informations</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/admin/base}">
+<head>
+    <title>Administration des Annonces</title>
+</head>
+<body>
+<div layout:fragment="content" class="container-fluid">
+    <h1>Gestions des annonces</h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Titre</th>
+            <th>Auteur</th>
+            <th class="text-center">Réservations</th>
+            <th class="text-center">Note</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr th:each="ad : ${ads}">
+                <td th:text="${ad.id}"></td>
+                <td th:text="${ad.title}"></td>
+                <td><img class="avatar avatar-min" th:src="@{${ad.author.picture}}" th:alt="${ad.author.fullName}" />[[${ad.author.fullName}]]</td>
+                <td class="text-center" th:text="${#arrays.length(ad.bookings)}"></td>
+                <td class="text-center" th:text="${#numbers.formatDecimal(ad.avgRatings,1,1,'POINT')}"></td>
+                <td>
+                    <a class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                    <a class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

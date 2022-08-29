@@ -9,35 +9,6 @@
 <div layout:fragment="content" class="container">
     <h1>Voici les annonces de nos hôtes !</h1>
 
-    <div class="row">
-
-        <div class="col-md-4" th:each="ad : ${ads}" th:with="url=${'/ads/'+{ad.slug}}">
-            <div class="card bg-light mb-3">
-                <div class="card-header text-center">
-                    <span th:text="${ad.rooms}"></span>
-                    chambres, <strong th:text="${ad.price}"></strong><strong> &euro; / nuit</strong> <br />
-
-                    <small>Pas encore noté</small>
-
-
-                </div>
-                <a th:href="@{${url}}"> <img th:src="@{${ad.coverImage}}" alt="Image de l'appartement"
-                                  style="height: 200px; width: 100%; display: block" />
-                </a>
-
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <a th:href="@{${url}}" th:text="${ad.title}"></a>
-                    </h4>
-                    <p th:text="${ad.introduction}">
-
-                    </p>
-                    <a th:href="@{${url}}"
-                       class="btn btn-secondary">En savoir plus !</a>
-
-                </div>
-            </div>
-        </div>
-    </div>
+    <div th:replace="~{/ad/_ad::ads(${ads})}"></div>
 
 </div>

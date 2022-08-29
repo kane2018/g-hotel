@@ -1,0 +1,9 @@
+<span th:fragment="rating(rating)" class="rating" th:each="i : ${#numbers.sequence(1, 5)}">
+                        <th:block th:if="${i <= rating}">
+                            <i class="fas fa-star"></i>
+                        </th:block>
+
+                        <th:block th:unless="${i <= rating}">
+                            <i class="far fa-star"></i>
+                        </th:block>
+                    </span>

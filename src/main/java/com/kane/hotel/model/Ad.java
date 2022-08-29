@@ -5,8 +5,7 @@ import com.github.slugify.Slugify;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"title"})})
@@ -35,6 +34,11 @@ public class Ad {
     @ManyToOne(optional = false)
     @JoinColumn
     private User author;
+    @OneToMany(mappedBy = "ad")
+    private List<Booking> bookings;
+    @OneToMany(mappedBy = "ad", fetch = FetchType.LAZY)
+    private List<Comment> comments;
+
 
     @PrePersist
     @PreUpdate
@@ -126,5 +130,68 @@ public class Ad {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<Date> getNotAvailableDays() {
+
+        List<Date> notAvailableDays = new ArrayList<>();
+
+        for (Booking booking: this.bookings
+             ) {
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(booking.getStartDate());
+
+            while (calendar.getTime().before(booking.getEndDate())) {
+                Date result = calendar.getTime();
+                calendar.add(Calendar.DATE, 1);
+                notAvailableDays.add(result);
+            }
+
+        }
+
+        return notAvailableDays;
+    }
+
+    public float getAvgRatings() {
+        float somme = 0;
+        for (Comment comment: this.comments
+             ) {
+            somme += comment.getRating();
+        }
+
+        if(this.comments.size() != 0) {
+            return somme / this.comments.size();
+        }
+
+        return 0;
+    }
+
+    public Comment getCommentFromAuthor(User author) {
+
+        for (Comment comment: this.getComments()
+             ) {
+
+            if (comment.getAuthor().getEmail().equals(author.getEmail())) {
+                return comment;
+            }
+        }
+
+        return null;
     }
 }

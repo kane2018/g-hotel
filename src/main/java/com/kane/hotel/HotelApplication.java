@@ -27,6 +27,8 @@ public class HotelApplication implements CommandLineRunner {
     private RoleService roleService;
     @Autowired
     private BookingService bookingService;
+    @Autowired
+    private CommentService commentService;
 
     public static void main(String[] args) {
         SpringApplication.run(HotelApplication.class, args);
@@ -34,7 +36,7 @@ public class HotelApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Faker f = new Faker("fr");
+        /*Faker f = new Faker("fr");
 
         List<User> users = new ArrayList<>();
 
@@ -151,11 +153,23 @@ public class HotelApplication implements CommandLineRunner {
                 int duration = f.number.between(3, 10);
 
                 booking.setEndDate(new Timestamp(troisMois.plusDays(duration).toDate().getTime()));
-                booking.setBooker(users.get(f.number.between(0, users.size() - 1)));
+                User booker = users.get(f.number.between(0, users.size() - 1));
+                booking.setBooker(booker);
                 booking.setAd(a);
                 booking.setAmount(a.getPrice() * duration);
+                booking.setComment(f.lorem.paragraph());
 
                 bookingService.ajouter(booking);
+
+                if(f.number.between(0, 1) != 0) {
+                    Comment comment = new Comment();
+                    comment.setContent(f.lorem.paragraph());
+                    comment.setRating(f.number.between(1, 5));
+                    comment.setAuthor(booker);
+                    comment.setAd(a);
+
+                    commentService.ajouter(comment);
+                }
             }
 
             for(int j = 1; j <= f.number.between(2, 5); j++){
@@ -167,6 +181,6 @@ public class HotelApplication implements CommandLineRunner {
 
                 imageService.ajouter(image);
             }
-        }
+        }*/
     }
 }

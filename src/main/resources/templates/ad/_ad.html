@@ -1,0 +1,33 @@
+<div class="row" th:fragment="ads(ads)">
+
+    <div class="col-md-4" th:each="ad : ${ads}" th:with="url=${'/ads/'+{ad.slug}}">
+        <div class="card bg-light mb-3">
+            <div class="card-header text-center">
+                <span th:text="${ad.rooms}"></span>
+                chambres, <strong th:text="${ad.price}"></strong><strong> &euro; / nuit</strong> <br />
+
+                <th:block th:if="${#arrays.length(ad.comments) > 0}">
+                    <div th:replace="~{/partials/rating::rating(rating=${ad.avgRatings})}"></div>
+                </th:block>
+                <small th:if="${#arrays.length(ad.comments) == 0}">Pas encore noté</small>
+
+
+            </div>
+            <a th:href="@{${url}}"> <img th:src="@{${ad.coverImage}}" alt="Image de l'appartement"
+                                         style="height: 200px; width: 100%; display: block" />
+            </a>
+
+            <div class="card-body">
+                <h4 class="card-title">
+                    <a th:href="@{${url}}" th:text="${ad.title}"></a>
+                </h4>
+                <p th:text="${ad.introduction}">
+
+                </p>
+                <a th:href="@{${url}}"
+                   class="btn btn-secondary">En savoir plus !</a>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,8 +1,11 @@
 package com.kane.hotel.model;
 
 import com.github.slugify.Slugify;
-import com.kane.hotel.validation.PasswordValueMatch;
-import com.kane.hotel.validation.ValidPassword;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.data.jpa.repository.EntityGraph;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -19,6 +22,7 @@ import java.util.List;
         )
 })*/
 @Entity
+@NamedEntityGraph(name = "User.bookings", attributeNodes = @NamedAttributeNode("bookings"))
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -65,6 +69,10 @@ public class User implements Serializable {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles;
+    @OneToMany(mappedBy = "booker")
+    private List<Booking> bookings;
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    private List<Comment> comments;
 
 
     @PrePersist
@@ -186,5 +194,21 @@ public class User implements Serializable {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

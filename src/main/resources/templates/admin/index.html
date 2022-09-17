@@ -1,28 +1,73 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/admin/base}">
 <head>
-  <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">G-HOTEL</title>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-  <link rel="stylesheet" th:href="@{/css/app.css}">
-  <link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.min.css}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
-
-  <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
-  <script th:src="@{/js/popper.min.js}"></script>
-  <script th:src="@{/js/bootstrap.min.js}"></script>
-  <script th:src="@{/js/bootstrap-datepicker.min.js}"></script>
-  <script th:src="@{/js/bootstrap-datepicker.fr.min.js}"></script>
+  <title>Accueil Administration</title>
 </head>
 <body>
-<div th:replace="~{/admin/partials/header :: header_admin}"></div>
+<div layout:fragment="content" class="container-fluid">
 
-<div layout:fragment="content">
+  <div class="row">
+    <div class="col">
+      <div class="card text-white bg-primary mb-3 text-center">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-4">
+              <i class="fas fa-users fa-3x"></i>
+            </div>
+            <div class="col-8">
+               utilisateurs
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card text-white bg-success mb-3 text-center">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-4">
+              <i class="fas fa-hotel fa-3x"></i>
+            </div>
+            <div class="col-8">
+               annonces postées
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card text-white bg-warning mb-3 text-center">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-4">
+              <i class="fas fa-folder fa-3x"></i>
+            </div>
+            <div class="col-8">
+               réservations
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card text-white bg-success mb-3 text-center">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-4">
+              <i class="fas fa-comments fa-3x"></i>
+            </div>
+            <div class="col-8">
+               avis
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>
-
-<div th:replace="~{/admin/partials/footer :: footer_admin}"></div>
 
 </body>
 </html>

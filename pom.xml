@@ -73,10 +73,7 @@
             <artifactId>slugify</artifactId>
             <version>3.0.2</version>
         </dependency>
-        <dependency>
-            <groupId>nz.net.ultraq.thymeleaf</groupId>
-            <artifactId>thymeleaf-layout-dialect</artifactId>
-        </dependency>
+
         <!-- https://mvnrepository.com/artifact/joda-time/joda-time -->
         <dependency>
             <groupId>joda-time</groupId>

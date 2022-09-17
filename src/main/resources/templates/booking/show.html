@@ -70,7 +70,7 @@
       </div>
       <div class="alert-light mt-3" id="comment">
         <h2 class="alert-heading">Votre avis compte !</h2>
-        <th:block th:if="${#dates.createNow() <= booking.endDate}">
+        <th:block th:if="${#dates.createNow() > booking.endDate}">
 
 
           <th:block th:if="${booking.ad.getCommentFromAuthor(author) != null}">
@@ -98,7 +98,7 @@
         </form>
         </th:block>
         </th:block>
-        <th:block th:if="${#dates.createNow() > booking.endDate}">
+        <th:block th:if="${#dates.createNow().getTime() <= booking.endDate.getTime()}">
         <p>Vous ne pourrez pas noter cette annonce tant que votre voyage ne sera pas complet !</p>
 
         </th:block>

@@ -35,11 +35,6 @@ public class AccountController {
         return "account/login";
     }
 
-    @GetMapping(value = "/logout", name = "account_logout")
-    public String logout() {
-        return "redirect:/login";
-    }
-
     @GetMapping(value = "/register", name = "account_register_form")
     public String registerForm(Model model) {
         User user = new User();

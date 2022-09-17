@@ -15,4 +15,6 @@ public interface AdService {
 
     Ad modifier(Ad ad, Integer id);
 
+    Ad getAd(Integer id);
+
 }

@@ -3,17 +3,14 @@ package com.kane.hotel.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@Order(2)
+@Order(1)
 public class AdminSecurityConfig {
 
     @Bean
@@ -27,38 +24,33 @@ public class AdminSecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager2(
-            HttpSecurity http) throws Exception {
+    public DaoAuthenticationProvider authenticationProvider2() {
+        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+        auth.setUserDetailsService(userDetailsService2());
+        auth.setPasswordEncoder(passwordEncoder2());
 
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(userDetailsService2())
-                .passwordEncoder(passwordEncoder2())
-                .and()
-                .build();
+        return auth;
     }
 
     @Bean
     public SecurityFilterChain filterChain2(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/ads/**/book").hasRole("USER")
-                .antMatchers("/register", "/", "/ads/**", "/user/**").permitAll();
-        http.
-                antMatcher("/admin/**").authorizeRequests()
-                .anyRequest()
-                .authenticated()
+
+        http.authenticationProvider(authenticationProvider2());
+
+        http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN");
+
+        http.antMatcher("/admin/**").authorizeRequests().anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/admin/login")
-                .permitAll()
                 .defaultSuccessUrl("/admin")
                 .failureUrl("/admin/login?error=true")
+                .permitAll()
                 .and()
                 .logout()
                 .logoutUrl("/admin/logout")
                 .permitAll()
-        .and().csrf().disable()
-        .sessionManagement();
+        .and().csrf().disable();
 
 
         return http.build();

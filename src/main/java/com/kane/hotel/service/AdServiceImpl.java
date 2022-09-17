@@ -31,6 +31,11 @@ public class AdServiceImpl implements AdService{
     }
 
     @Override
+    public Ad getAd(Integer id) {
+        return adRepository.findById(id).get();
+    }
+
+    @Override
     public List<Ad> getList() {
         return (List<Ad>) adRepository.findAll();
     }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.Date;
 
@@ -33,6 +34,7 @@ public class BookingController {
     @Autowired
     private CommentService commentService;
 
+    @RolesAllowed({"USER"})
     @GetMapping(value = "/ads/{slug}/book", name = "booking_create")
     public String book(@PathVariable("slug") String slug, Model model) {
         Booking booking = new Booking();
@@ -42,6 +44,7 @@ public class BookingController {
         return "booking/book";
     }
 
+    @RolesAllowed({"USER"})
     @PostMapping(value = "ads/{slug}/book", name = "booking_save")
     public String bookSave(@PathVariable("slug") String slug, @Valid Booking booking, BindingResult bindingResult, Model model, RedirectAttributes attributes) {
 

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/admin/base}">
+<head>
+    <title>Administration des Annonces</title>
+</head>
+<body>
+<div layout:fragment="content" class="container-fluid">
+    <h1>Modification de l'annonce [[${ad.title}]]</h1>
+
+    <form action="#" method="post" th:action="@{/admin/ads}" th:object="${ad}">
+
+        <div class="row">
+            <div class="col">
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h4 class="card-title">Corriger l'annonce</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="titre" class="form-label mt-4">Titre</label>
+
+                            <input type="text" class="form-control" th:field="*{title}" th:value="${ad.title}" id="titre"/>
+
+                            <p th:errorclass="error" th:if="*{#fields.hasErrors('title')}" th:errors="*{title}"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="image" class="form-label mt-4">Image</label>
+                            <input type="text" class="form-control" th:field="*{coverImage}" th:value="${ad.coverImage}" id="image">
+                            <p th:errorclass="error" th:if="*{#fields.hasErrors('coverImage')}" th:errors="*{coverImage}"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="intro" class="form-label mt-4">Introduction</label>
+                            <textarea class="form-control" th:field="*{introduction}" th:value="${ad.introduction}" id="intro">
+                </textarea>
+                            <p th:errorclass="error" th:if="*{#fields.hasErrors('introduction')}" th:errors="*{introduction}"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contenu" class="form-label mt-4">Contenu</label>
+                            <textarea type="text" class="form-control" th:field="*{content}" th:value="${ad.content}" id="contenu">
+                </textarea>
+                            <p th:errorclass="error" th:if="*{#fields.hasErrors('content')}" th:errors="*{content}"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nbrecham" class="form-label mt-4">Nombre de chambre</label>
+                            <input type="text" class="form-control" th:field="*{rooms}" th:value="${ad.rooms}" id="nbrecham"/>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="prix" class="form-label mt-4">Prix</label>
+                            <input type="text" class="form-control" th:field="*{price}" th:value="${ad.price}" id="prix">
+
+                        </div>
+
+                        <br/>
+
+                        <div id="img">
+
+                            <div th:each="image, iter : *{images}" class="form-group" th:attr="id='block_'+${iter.index}">
+                                <div class="row">
+                                    <div class="col-10">
+                                        <div class="row">
+                                            <div class="col">
+                                                <input placeholder="URL de l'annonce" class="form-control" th:field="*{images[__${iter.index}__].url}" th:value="${image.url}">
+                                            </div>
+                                            <div class="col">
+                                                <input placeholder="Caption de l'annonce" class="form-control" th:field="*{images[__${iter.index}__].caption}" th:value="${image.caption}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <a href="#" class="btn btn-danger" data-action="delete" th:attr="data-target='block_'+${iter.index}">X</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <input type="hidden" id="compteur" value="0">
+
+
+                        </div>
+                        <br/>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h4 class="card-title">Les réservations</h4>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Voyageur</th>
+                                <th>Date de réservation</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="booking : ${ad.bookings}">
+                                <td>[[${booking.id}]]</td>
+                                <td>[[${booking.booker.fullName}]]</td>
+                                <td>[[${booking.createdAt}]]</td>
+                                <td>
+                                    <a href="#" class="btn btn-primary">
+                                        <i class="fas fa-pencil"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card bg-light mt-5">
+                    <div class="card-header">
+                        <h4 class="card-title">Les commentaires</h4>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Voyageur</th>
+                                <th>Note</th>
+                                <th>Commentaire</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="comment : ${ad.comments}">
+                                <td>[[${comment.id}]]</td>
+                                <td>[[${comment.author.fullName}]]</td>
+                                <td>[[${comment.rating}]]</td>
+                                <td>[[${comment.content}]]</td>
+                                <td>
+                                    <a href="#" class="btn btn-primary">
+                                        <i class="fas fa-pencil"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+<script>
+    $('document').ready(function () {
+        $('#img').on('click', '.btn.btn-danger', function (e) {
+            e.preventDefault();
+            const target = this.dataset.target;
+            $('#'+target).remove();
+        });
+    });
+</script>
+</div>
+</body>
+</html>
